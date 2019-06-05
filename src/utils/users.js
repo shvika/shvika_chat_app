@@ -1,4 +1,6 @@
 const users = [] 
+const {addRoom} =  require('./rooms')
+
 
 
 const addUser = ({id, username, room}) =>{
@@ -28,6 +30,7 @@ const addUser = ({id, username, room}) =>{
     // Store user
     const user = {id, username, room}
     users.push(user)
+    addRoom(room)
     return {user}
 }
 

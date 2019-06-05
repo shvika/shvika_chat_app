@@ -5,6 +5,8 @@ const socketio = require ('socket.io')
 const Filter = require('bad-words')
 const {generateMessage, generateLocationMessage} =  require('./utils/messages')
 const {addUser, removeUser, getUser, getUsersInRoom} =  require('./utils/users')
+const {getAllRooms} =  require('./utils/rooms')
+
 
 const app = express()
 const server = http.createServer(app)
@@ -30,6 +32,12 @@ app.use(express.static(publicDirectoryPath))
 io.on('connection', (socket) => {
     console.log('new webSocket connection')
     
+    socket.on('Rooms', ( {}, callback) => {
+
+        const rooms = getAllRooms()
+        // socket.emit('roomsMessage', ['Haifa', 'Tel Aviv', 'Afula'])
+        socket.emit('roomsMessage', rooms)
+    })
     
 
 
@@ -50,9 +58,6 @@ io.on('connection', (socket) => {
         })
 
         callback()
-
-        
-
     })
 
     socket.on('sendMessage', (message, callback) => {

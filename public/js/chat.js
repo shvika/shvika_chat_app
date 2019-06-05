@@ -14,7 +14,7 @@ const locationTemplate = document.querySelector('#location-template').innerHTML
 const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML
 
 // Options
-const { username, room} = Qs.parse(location.search, { ignoreQueryPrefix: true})
+let { username, room, roomselection} = Qs.parse(location.search, { ignoreQueryPrefix: true})
 
 const autoscroll = () =>{
     // New message element
@@ -116,9 +116,22 @@ $locationButton.addEventListener('click', () => {
              )
     })
 
-})  
+})
+
+if (room==='' && roomselection===''){
+    location.href = '/'
+    const error =  'Room must be selected from list or entered manually'
+    alert(error)
+    throw new Error(error)
+}else {
+
+    if (room === ''){
+        room = roomselection //becasue room is what's being sent to server 
+    }
+}
 
 socket.emit('join', {username, room}, (error)  => {
+    console.log(username, room, roomselection)
     if (error){
         alert(error)
         location.href='/'
